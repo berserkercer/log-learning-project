@@ -4,17 +4,37 @@
     scan: true【配置文件自动重新加载】, 默认false
     scanPeriod: 扫描周期，默认为一分钟，单位包括: milliseconds/seconds/minutes/hours, 默认单位毫秒
 -->
-<configuration debug="false" scan="true">
+<configuration>
+    <contextName>log-back-learning</contextName>
+    <property resource="logback.properties" />
+
+    <!--
+        1、p() 等价 property()；
+        2、if then else 表达式需要引入 org.codehaus.janino 包
+    -->
+    <if condition='p("debug_mode").contains("false")'>
+        <then>
+            <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+                <file>log-back.log</file>
+                <encoder charset="UTF-8">
+                    <pattern>${log_format}</pattern>
+                </encoder>
+            </appender>
+            <!--默认additivity：true，false时即不会累计记录-->
+            <logger name="com.domain" level="debug" additivity="true">
+                <appender-ref ref="FILE" />
+            </logger>
+        </then>
+    </if>
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{120}:%line - %msg%n</pattern>
+        <encoder charset="UTF-8">
+            <pattern>${log_format}</pattern>
         </encoder>
     </appender>
 
-    <logger name="com.domain" level="debug" />
-
     <!--默认level：debug-->
-    <root level="off">
+    <root level="debug">
         <appender-ref ref="CONSOLE" />
     </root>
 </configuration>
