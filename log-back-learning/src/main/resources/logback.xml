@@ -25,6 +25,24 @@
                 <appender-ref ref="FILE" />
             </logger>
         </then>
+        <else>
+            <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>log-back-roll.log</file>
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <fileNamePattern>log-back-roll-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                    <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                        <maxFileSize>3KB</maxFileSize>
+                    </timeBasedFileNamingAndTriggeringPolicy>
+                    <maxHistory>30</maxHistory>
+                </rollingPolicy>
+                <encoder charset="UTF-8">
+                    <pattern>${log_format}</pattern>
+                </encoder>
+            </appender>
+            <logger name="com.domain" level="debug" additivity="true">
+                <appender-ref ref="FILE" />
+            </logger>
+        </else>
     </if>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">

@@ -2,3 +2,4 @@
 
 *.iml
 /log-back-learning/target
+*.log
